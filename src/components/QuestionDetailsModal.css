@@ -1,0 +1,21 @@
+.table {
+  border: 1px solid #555;
+  font-size: 1.1em;
+}
+
+.tag-label {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.avatar-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tags-container {
+  display: flex;
+  align-items: center;
+}
