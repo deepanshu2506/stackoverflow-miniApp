@@ -1,0 +1,7 @@
+{
+  "name": "StackOverflow-microApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
