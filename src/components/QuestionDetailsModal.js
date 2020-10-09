@@ -17,6 +17,7 @@ import React from "react";
 import moment from "moment";
 import "./QuestionDetailsModal.css";
 const QuestionDetailsModal = ({ question, ...props }) => {
+  const parser = new DOMParser();
   return (
     <IonModal isOpen={props.isOpen}>
       <IonHeader>
@@ -27,7 +28,7 @@ const QuestionDetailsModal = ({ question, ...props }) => {
           <IonTitle>Question Details</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonGrid>
+      <IonGrid fixed={true}>
         <IonRow>
           <IonCol className="avatar-div" sizeMd="2" sizeXs="3">
             <IonAvatar>
@@ -39,7 +40,10 @@ const QuestionDetailsModal = ({ question, ...props }) => {
               <IonCol size="12">
                 <IonText>
                   <h2 ion-text className="title">
-                    {question?.title}
+                    {
+                      parser.parseFromString(question?.title || "", "text/html")
+                        .body.innerHTML
+                    }
                   </h2>
                   <span>
                     {`asked ${moment

@@ -1,4 +1,4 @@
-// import { StackOverFlowGet } from "../../utils/Requests";
+import { StackOverFlowGet } from "../../utils/Requests";
 import { data } from "../../dummy";
 
 export const FETCH_QUESTIONS = "FETCH_QUESTIONS";
@@ -11,10 +11,6 @@ const setQuestions = (questions, hasMore) => ({
 
 const setLoading = (loadState) => ({ type: LOADING_STATE, payload: loadState });
 
-const StackOverFlowGet = () =>
-  new Promise((resolve) => {
-    setTimeout(() => resolve(data), 500);
-  });
 const FetchQuestions = () => async (dispatch, getState) => {
   try {
     setLoading(true);
