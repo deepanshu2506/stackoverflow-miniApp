@@ -1,63 +1,56 @@
 import {
-  IonAvatar,
-  IonCard,
-  IonCardContent,
-  IonChip,
   IonCol,
   IonGrid,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
-  IonLabel,
   IonRow,
-  IonText,
 } from "@ionic/react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import React, { useState } from "react";
 import "./QuestionsContainer.css";
 import { StackOverFlowGet } from "../utils/Requests";
 import { data } from "../dummy";
 
 import QuestionCard from "./QuestionCard";
-import LoadingIndicator from "./LoadingIndicator";
 import QuestionDetailsModal from "./QuestionDetailsModal";
+import { getQuestions } from "../redux/actions/questionsActions";
+import { connect, ConnectedProps } from "react-redux";
+import LoadingIndicator from "./LoadingIndicator";
 
-interface ContainerProps {}
+const mapStateToProps = ({ data }: any) => ({
+  questions: data.questions,
+  hasMore: data.hasMore,
+  isLoading: data.isLoading,
+});
 
-const ExploreContainer: React.FC<ContainerProps> = () => {
-  const [questions, setQuestions] = useState<any[]>([]);
+const mapDispatchToProps = (dispatch: any) => ({
+  getQuestions: () => dispatch(getQuestions()),
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type propsFromRedux = ConnectedProps<typeof connector>;
+
+const QuestionsContainer = ({
+  questions,
+  getQuestions,
+  hasMore,
+  isLoading,
+}: propsFromRedux) => {
   const [modalProps, setModalProps] = useState<any>({
     isOpen: false,
     question: undefined,
   });
-  let page = 1;
+
   const openModal = (question: any) =>
     setModalProps({ isOpen: true, question });
-  // function getData() {
-  //   return new Promise((resolve, reject) => {
-  //     page++;
-  //     StackOverFlowGet({ page: page + 1 })
-  //       .then(({ items, has_more }) => {
-  //         setQuestions([...questions, ...items]);
-  //         resolve();
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //         reject(err);
-  //       });
-  //   });
-  // }
-
-  function getData() {
-    setQuestions([...questions, ...data.items]);
-  }
 
   async function searchNext($event: CustomEvent<void>) {
-    await getData();
+    await getQuestions();
 
     ($event.target as HTMLIonInfiniteScrollElement).complete();
   }
   React.useEffect(() => {
-    getData();
+    getQuestions();
   }, []);
 
   return (
@@ -81,10 +74,9 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
                 searchNext(e);
               }}
             >
-              <IonInfiniteScrollContent
-                loadingSpinner="circular"
-                loadingText="loading..."
-              ></IonInfiniteScrollContent>
+              <IonInfiniteScrollContent loadingSpinner={null}>
+                <LoadingIndicator />
+              </IonInfiniteScrollContent>
             </IonInfiniteScroll>
           </IonCol>
         </IonRow>
@@ -93,4 +85,4 @@ const ExploreContainer: React.FC<ContainerProps> = () => {
   );
 };
 
-export default ExploreContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionsContainer);

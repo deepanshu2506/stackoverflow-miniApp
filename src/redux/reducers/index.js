@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
-import CategoriesReducer from "./categoriesReducer";
+import QuestionsReducer from "./questionsReducer";
 
 const rootReducer = combineReducers({
-  categories: CategoriesReducer,
+  data: QuestionsReducer,
 });
 export default rootReducer;

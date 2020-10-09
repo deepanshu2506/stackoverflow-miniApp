@@ -45,7 +45,11 @@ const QuestionDetailsModal = ({ question, ...props }) => {
                     {`asked ${moment
                       .unix(question?.creation_date)
                       .format("MMM DD, 'YY")} by `}
-                    <a target="_blank" href={question?.owner.link}>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={question?.owner.link || "/home"}
+                    >
                       {question?.owner.display_name}
                     </a>
                   </span>
